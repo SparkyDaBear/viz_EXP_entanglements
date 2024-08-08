@@ -31,18 +31,29 @@
                 .then(text => parseCSV(text));
         }
 
-        // Function to parse CSV text
-        function parseCSV(text) {
-            const rows = text.trim().split("\n");
-            const headers = rows[0].split(",");
-            return rows.slice(1).map(row => {
-                const values = row.split(",");
-                return headers.reduce((obj, header, index) => {
-                    obj[header] = header === "c" ? JSON.parse(values[index]) : values[index];
-                    return obj;
-                }, {});
-            });
-        }
+    	// Function to parse CSV text
+	function parseCSV(text) {
+	    const rows = text.trim().split("\n");
+	    const headers = rows[0].split(",");
+	    return rows.slice(1).map(row => {
+		const values = row.split(",");
+		return headers.reduce((obj, header, index) => {
+		    // Parse the 'c' column as JSON
+		    if (header === "c") {
+			try {
+			    obj[header] = JSON.parse(values[index]);
+			} catch (e) {
+			    console.error("Error parsing JSON in 'c' column:", values[index], e);
+			    obj[header] = [];
+			}
+		    } else {
+			obj[header] = values[index];
+		    }
+		    return obj;
+		}, {});
+	    });
+	}
+
 
         // Function to populate PDB Select Dropdown
         function populatePDBSelect(pdbFiles) {
