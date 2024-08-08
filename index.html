@@ -31,17 +31,20 @@
                 .then(text => parseCSV(text));
         }
 
-    	// Function to parse CSV text
+	// Function to parse CSV text
 	function parseCSV(text) {
 	    const rows = text.trim().split("\n");
 	    const headers = rows[0].split(",");
 	    return rows.slice(1).map(row => {
 		const values = row.split(",");
 		return headers.reduce((obj, header, index) => {
-		    // Parse the 'c' column as JSON
+		    // Parse the 'c' column as JSON, ensuring it's an array
 		    if (header === "c") {
 			try {
 			    obj[header] = JSON.parse(values[index]);
+			    if (!Array.isArray(obj[header])) {
+				throw new Error(`Parsed 'c' is not an array: ${obj[header]}`);
+			    }
 			} catch (e) {
 			    console.error("Error parsing JSON in 'c' column:", values[index], e);
 			    obj[header] = [];
@@ -53,7 +56,6 @@
 		}, {});
 	    });
 	}
-
 
         // Function to populate PDB Select Dropdown
         function populatePDBSelect(pdbFiles) {
@@ -106,35 +108,36 @@
             });
         }
 
-        // Highlight residues based on the selected row
-        function highlightResidues(row) {
-            const component = stage.compList[0];
-            component.removeAllRepresentations();
-            component.addRepresentation("cartoon");
-            component.addRepresentation("spacefill", {
-                sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
-                color: "grey",
-                radius: 2.0
-            });
-            component.addRepresentation("ball+stick", {
-                sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
-                color: "red"
-            });
-            component.addRepresentation("surface", {
-                sele: row.c.map(id => `${id}`).join(' or '),
-                color: "blue",
-                opacity: 0.5
-            });
+	// Highlight residues based on the selected row
+	function highlightResidues(row) {
+	    const component = stage.compList[0];
+	    component.removeAllRepresentations();
+	    component.addRepresentation("cartoon");
+	    component.addRepresentation("spacefill", {
+		sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
+		color: "grey",
+		radius: 2.0
+	    });
+	    component.addRepresentation("ball+stick", {
+		sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
+		color: "red"
+	    });
+	    component.addRepresentation("surface", {
+		sele: row.c.map(id => `${id}`).join(' or '),
+		color: "blue",
+		opacity: 0.5
+	    });
 
-            // Display information
-            document.getElementById("info").innerHTML = `
-                <strong>UniprotID:</strong> ${row.UniprotID}<br>
-                <strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
-                <strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
-                <strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
-                <strong>c:</strong> ${row.c.join(', ')}
-            `;
-        }
+	    // Display information
+	    document.getElementById("info").innerHTML = `
+		<strong>UniprotID:</strong> ${row.UniprotID}<br>
+		<strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
+		<strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
+		<strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
+		<strong>c:</strong> ${row.c.join(', ')}
+	    `;
+	}
+
 
         // Load CSV data and initialize the viewer
         let csvData = [];
