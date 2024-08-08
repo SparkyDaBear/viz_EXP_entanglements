@@ -1,4 +1,4 @@
-UniprotID,ENT-ID,i,i-resname,j,j-resname,c
-P0AD61,0,10,CYS,80,LYS,"[100,102]"
-P0AD61,1,100,ARG,280,LEU,"[20]"
-P38054,0,20,MET,90,ALA,"[10,100]"
+UniprotID|ENT-ID|i|i-resname|j|j-resname|c
+P0AD61|0|10|CYS|80|LYS|"[100,102]"
+P0AD61|1|100|ARG|280|LEU|"[20]"
+P38054|0|20|MET|90|ALA|"[10,100]"

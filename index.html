@@ -31,26 +31,27 @@
                 .then(text => parseCSV(text));
         }
 
-	// Function to parse CSV text
+	// Function to parse CSV text with '|' as separator
 	function parseCSV(text) {
 	    const rows = text.trim().split("\n");
-	    const headers = rows[0].split(",");
-	    return rows.slice(1).map(row => {
-		const values = row.split(",");
+	    const headers = rows[0].split("|");
+	    return rows.slice(1).map((row, rowIndex) => {
+		const values = row.split("|");
 		return headers.reduce((obj, header, index) => {
-		    // Parse the 'c' column as JSON, ensuring it's an array
-		    if (header === "c") {
-			try {
-			    obj[header] = JSON.parse(values[index]);
+		    try {
+			if (header === "c") {
+			    // Trim the value and ensure it's a valid JSON string
+			    const jsonValue = values[index].trim();
+			    obj[header] = JSON.parse(jsonValue);
 			    if (!Array.isArray(obj[header])) {
 				throw new Error(`Parsed 'c' is not an array: ${obj[header]}`);
 			    }
-			} catch (e) {
-			    console.error("Error parsing JSON in 'c' column:", values[index], e);
-			    obj[header] = [];
+			} else {
+			    obj[header] = values[index];
 			}
-		    } else {
-			obj[header] = values[index];
+		    } catch (e) {
+			console.error(`Error parsing row ${rowIndex + 1}, column '${header}':`, values[index], e);
+			obj[header] = []; // Default to an empty array on error
 		    }
 		    return obj;
 		}, {});
