@@ -40,11 +40,14 @@
 		return headers.reduce((obj, header, index) => {
 		    try {
 			if (header === "c") {
-			    // Trim the value and ensure it's a valid JSON string
+			    // Parse the JSON array from the string value
 			    const jsonValue = values[index].trim();
 			    obj[header] = JSON.parse(jsonValue);
+
+			    // Ensure the result is an array
 			    if (!Array.isArray(obj[header])) {
-				throw new Error(`Parsed 'c' is not an array: ${obj[header]}`);
+				console.error(`Parsed 'c' is not an array: ${obj[header]}`);
+				obj[header] = [];
 			    }
 			} else {
 			    obj[header] = values[index];
@@ -57,7 +60,6 @@
 		}, {});
 	    });
 	}
-
         // Function to populate PDB Select Dropdown
         function populatePDBSelect(pdbFiles) {
             const pdbSelect = document.getElementById("pdbSelect");
