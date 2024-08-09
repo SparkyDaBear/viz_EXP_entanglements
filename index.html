@@ -40,14 +40,13 @@
 		return headers.reduce((obj, header, index) => {
 		    try {
 			if (header === "c") {
-			    // Parse the JSON array from the string value
-			    const jsonValue = values[index].trim();
-			    obj[header] = JSON.parse(jsonValue);
+			    // Split the string by ';' and convert to an array
+			    const valueString = values[index].trim();
+			    obj[header] = valueString ? valueString.split(";").map(Number) : [];
 
 			    // Ensure the result is an array
 			    if (!Array.isArray(obj[header])) {
-				console.error(`Parsed 'c' is not an array: ${obj[header]}`);
-				obj[header] = [];
+				throw new Error(`Parsed 'c' is not an array: ${obj[header]}`);
 			    }
 			} else {
 			    obj[header] = values[index];
@@ -60,6 +59,7 @@
 		}, {});
 	    });
 	}
+
 
         // Function to populate PDB Select Dropdown
         function populatePDBSelect(pdbFiles) {
@@ -112,10 +112,11 @@
             });
         }
 
-	// Highlight residues based on the selected row
+	// Function to highlight residues based on the selected row
 	function highlightResidues(row) {
 	    console.log("Highlighting residues for row:", row); // Debug log
-	    console.log("Residue IDs:", row.c); // Debug log   
+	    console.log("Residue IDs:", row.c); // Debug log
+
 	    const component = stage.compList[0];
 	    component.removeAllRepresentations();
 	    component.addRepresentation("cartoon");
@@ -143,7 +144,6 @@
 		<strong>c:</strong> ${row.c.join(', ')}
 	    `;
 	}
-
 
         // Load CSV data and initialize the viewer
         let csvData = [];
