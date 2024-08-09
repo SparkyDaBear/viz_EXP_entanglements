@@ -31,7 +31,6 @@
                 .then(text => parseCSV(text));
         }
 
-	// Function to parse CSV text with '|' as separator
 	function parseCSV(text) {
 	    const rows = text.trim().split("\n");
 	    const headers = rows[0].split("|");
@@ -40,16 +39,11 @@
 		return headers.reduce((obj, header, index) => {
 		    try {
 			if (header === "c") {
-			    // Split the string by ';' and convert to an array
+			    // Split the string by ';' and convert to an array of numbers
 			    const valueString = values[index].trim();
 			    obj[header] = valueString ? valueString.split(";").map(Number) : [];
-
-			    // Ensure the result is an array
-			    if (!Array.isArray(obj[header])) {
-				throw new Error(`Parsed 'c' is not an array: ${obj[header]}`);
-			    }
 			} else {
-			    obj[header] = values[index];
+			    obj[header] = header === 'i' || header === 'j' ? Number(values[index]) : values[index];
 			}
 		    } catch (e) {
 			console.error(`Error parsing row ${rowIndex + 1}, column '${header}':`, values[index], e);
