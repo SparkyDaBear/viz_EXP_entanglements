@@ -31,29 +31,29 @@
                 .then(text => parseCSV(text));
         }
 
-	function parseCSV(text) {
-	    const rows = text.trim().split("\n");
-	    const headers = rows[0].split("|");
-	    return rows.slice(1).map((row, rowIndex) => {
-		const values = row.split("|");
-		return headers.reduce((obj, header, index) => {
-		    try {
-			if (header === "c") {
-			    // Split the string by ';' and convert to an array of numbers
-			    const valueString = values[index].trim();
-			    obj[header] = valueString ? valueString.split(";").map(Number) : [];
-			} else {
-			    obj[header] = header === 'i' || header === 'j' ? Number(values[index]) : values[index];
-			}
-		    } catch (e) {
-			console.error(`Error parsing row ${rowIndex + 1}, column '${header}':`, values[index], e);
-			obj[header] = []; // Default to an empty array on error
-		    }
-		    return obj;
-		}, {});
-	    });
-	}
-
+        // Function to parse CSV text with '|' as separator
+        function parseCSV(text) {
+            const rows = text.trim().split("\n");
+            const headers = rows[0].split("|");
+            return rows.slice(1).map((row, rowIndex) => {
+                const values = row.split("|");
+                return headers.reduce((obj, header, index) => {
+                    try {
+                        if (header === "c") {
+                            // Split the string by ';' and convert to an array of numbers
+                            const valueString = values[index].trim();
+                            obj[header] = valueString ? valueString.split(";").map(Number) : [];
+                        } else {
+                            obj[header] = header === 'i' || header === 'j' ? Number(values[index]) : values[index];
+                        }
+                    } catch (e) {
+                        console.error(`Error parsing row ${rowIndex + 1}, column '${header}':`, values[index], e);
+                        obj[header] = []; // Default to an empty array on error
+                    }
+                    return obj;
+                }, {});
+            });
+        }
 
         // Function to populate PDB Select Dropdown
         function populatePDBSelect(pdbFiles) {
@@ -93,6 +93,7 @@
 
             const rowSelect = document.getElementById("rowSelect");
             rowSelect.innerHTML = ''; // Clear existing options
+
             rows.forEach((row, index) => {
                 const option = document.createElement("option");
                 option.text = `ENT-ID: ${row["ENT-ID"]}, i: ${row.i}, j: ${row.j}`;
@@ -105,45 +106,45 @@
                 highlightResidues(rows[this.value]);
             });
 
-	    // Automatically highlight the first row
-	    if (rows.length > 0) {
-		rowSelect.selectedIndex = 0; // Select the first option
-		highlightResidues(rows[0]); // Highlight residues for the first row
-	    }
+            // Automatically highlight the first row
+            if (rows.length > 0) {
+                rowSelect.selectedIndex = 0; // Select the first option
+                highlightResidues(rows[0]); // Highlight residues for the first row
+            }
         }
 
-	// Function to highlight residues based on the selected row
-	function highlightResidues(row) {
-	    console.log("Highlighting residues for row:", row); // Debug log
-	    console.log("Residue IDs:", row.c); // Debug log
+        // Highlight residues based on the selected row
+        function highlightResidues(row) {
+            console.log("Highlighting residues for row:", row); // Debug log
+            console.log("Residue IDs:", row.c); // Debug log
 
-	    const component = stage.compList[0];
-	    component.removeAllRepresentations();
-	    component.addRepresentation("cartoon", {color: "cyan"});
-	    component.addRepresentation("spacefill", {
-		sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
-		color: "grey",
-		radius: 2.0
-	    });
-	    component.addRepresentation("cartoon", {
-		sele: `${row.i}-${row.j}`,
-		color: "red"
-	    });
-	    component.addRepresentation("ball+stick", {
-		sele: row.c.map(id => `${id}`).join(' or '),
-		color: "blue",
-		opacity: 0.5
-	    });
+            const component = stage.compList[0];
+            component.removeAllRepresentations();
+            component.addRepresentation("cartoon");
+            component.addRepresentation("spacefill", {
+                sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
+                color: "grey",
+                radius: 2.0
+            });
+            component.addRepresentation("cartoon", {
+                sele: `${row.i}-${row.j}`,
+                color: "red"
+            });
+            component.addRepresentation("spacefill", {
+                sele: row.c.map(id => `${id}`).join(' or '),
+                color: "blue",
+                opacity: 0.5
+            });
 
-	    // Display information
-	    document.getElementById("info").innerHTML = `
-		<strong>UniprotID:</strong> ${row.UniprotID}<br>
-		<strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
-		<strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
-		<strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
-		<strong>c:</strong> ${row.c.join(', ')}
-	    `;
-	}
+            // Display information
+            document.getElementById("info").innerHTML = `
+                <strong>UniprotID:</strong> ${row.UniprotID}<br>
+                <strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
+                <strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
+                <strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
+                <strong>c:</strong> ${row.c.join(', ')}
+            `;
+        }
 
         // Load CSV data and initialize the viewer
         let csvData = [];
