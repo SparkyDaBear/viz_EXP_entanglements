@@ -22,7 +22,7 @@
 
     <script>
         // Initialize NGL Stage
-        const stage = new NGL.Stage("viewport");
+	const stage = new NGL.Stage("viewport", {backgroundColor: "white"});
 
         // Function to fetch and parse CSV data
         function fetchCSVData(url) {
@@ -120,14 +120,16 @@
 
             const component = stage.compList[0];
             component.removeAllRepresentations();
-            component.addRepresentation("cartoon");
-            component.addRepresentation("spacefill", {
-                sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
-                color: "grey",
-                radius: 2.0
-            });
+	    component.addRepresentation("cartoon", {color: "cyan"});
+
+	    // highlight loop
             component.addRepresentation("cartoon", {
                 sele: `${row.i}-${row.j}`,
+                color: "red"
+            });
+
+            component.addRepresentation("spacefill", {
+                sele: `${row.i},${row.j}`,
                 color: "red"
             });
             component.addRepresentation("spacefill", {
