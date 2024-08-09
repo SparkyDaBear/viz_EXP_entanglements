@@ -60,6 +60,7 @@
 		}, {});
 	    });
 	}
+
         // Function to populate PDB Select Dropdown
         function populatePDBSelect(pdbFiles) {
             const pdbSelect = document.getElementById("pdbSelect");
@@ -113,6 +114,8 @@
 
 	// Highlight residues based on the selected row
 	function highlightResidues(row) {
+	    console.log("Highlighting residues for row:", row); // Debug log
+	    console.log("Residue IDs:", row.c); // Debug log   
 	    const component = stage.compList[0];
 	    component.removeAllRepresentations();
 	    component.addRepresentation("cartoon");
