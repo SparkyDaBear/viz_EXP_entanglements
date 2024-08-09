@@ -119,7 +119,7 @@
 
 	    const component = stage.compList[0];
 	    component.removeAllRepresentations();
-	    component.addRepresentation("cartoon");
+	    component.addRepresentation("cartoon", {color: "cyan"});
 	    component.addRepresentation("spacefill", {
 		sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
 		color: "grey",
@@ -129,7 +129,7 @@
 		sele: `${row.i}:${row["i-resname"]} or ${row.j}:${row["j-resname"]}`,
 		color: "red"
 	    });
-	    component.addRepresentation("surface", {
+	    component.addRepresentation("ball+stick", {
 		sele: row.c.map(id => `${id}`).join(' or '),
 		color: "blue",
 		opacity: 0.5
