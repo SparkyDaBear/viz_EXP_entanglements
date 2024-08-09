@@ -104,6 +104,12 @@
             rowSelect.addEventListener('change', function() {
                 highlightResidues(rows[this.value]);
             });
+
+	    // Automatically highlight the first row
+	    if (rows.length > 0) {
+		rowSelect.selectedIndex = 0; // Select the first option
+		highlightResidues(rows[0]); // Highlight residues for the first row
+	    }
         }
 
 	// Function to highlight residues based on the selected row
