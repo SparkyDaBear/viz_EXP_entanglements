@@ -39,7 +39,7 @@
                 const values = row.split("|");
                 return headers.reduce((obj, header, index) => {
                     try {
-                        if (header === "c") {
+                        if (header === "crossing_res" || header === "surrounding_res") {
                             // Split the string by ';' and convert to an array of numbers
                             const valueString = values[index].trim();
                             obj[header] = valueString ? valueString.split(";").map(Number) : [];
@@ -133,18 +133,21 @@
                 color: "red"
             });
             component.addRepresentation("spacefill", {
-                sele: row.c.map(id => `${id}`).join(' or '),
-                color: "blue",
-                opacity: 0.5
+                sele: row.crossing_res.map(id => `${id}`).join(' or '),
+                color: "blue"
             });
 
+            component.addRepresentation("spacefill", {
+                sele: row.surrounding_res.map(id => `${id}`).join(' or '),
+                color: "green"
+            });
             // Display information
             document.getElementById("info").innerHTML = `
                 <strong>UniprotID:</strong> ${row.UniprotID}<br>
                 <strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
                 <strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
                 <strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
-                <strong>c:</strong> ${row.c.join(', ')}
+                <strong>crossing(s):</strong> ${row.c.join(', ')}
             `;
         }
 
