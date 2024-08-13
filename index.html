@@ -19,6 +19,8 @@
     <select id="rowSelect"></select>
     <div id="viewport"></div>
     <div id="info"></div>
+    <label for="toggleSurroundingRes">Show Surrounding Residues:</label>
+    <input type="checkbox" id="toggleSurroundingRes" checked>
 
     <script>
         // Initialize NGL Stage
@@ -133,10 +135,23 @@
                 color: "red"
             });
 
-            component.addRepresentation("cartoon", {
-                sele: row.surrounding_res.map(id => `${id}`).join(' or '),
-                color: "green"
-            });
+            //component.addRepresentation("cartoon", {
+            //    sele: row.surrounding_res.map(id => `${id}`).join(' or '),
+            //   color: "green"
+            //});
+
+	    // Handle surrounding residues based on checkbox state
+	    if (document.getElementById("toggleSurroundingRes").checked) {
+	        surroundingResRep = component.addRepresentation("cartoon", {
+		    sele: row.surrounding_res.map(id => `${id}`).join(' or '),
+		    color: "green"
+	        });
+	    } else {
+	        if (surroundingResRep) {
+		    surroundingResRep.setVisibility(false);
+	        }
+	    }
+
 
             component.addRepresentation("spacefill", {
                 sele: row.crossing_res.map(id => `${id}`).join(' or '),
@@ -166,6 +181,14 @@
             csvData = data;
             const pdbFiles = [...new Set(csvData.map(row => `${row.UniprotID}.pdb`))];
             populatePDBSelect(pdbFiles);
+        });
+
+	// Add event listener for the checkbox
+        document.getElementById("toggleSurroundingRes").addEventListener('change', function() {
+            const currentRow = csvData.find(row => row.UniprotID === document.getElementById("pdbSelect").value.split('.')[0]);
+            if (currentRow) {
+                highlightResidues(currentRow);
+            }
         });
 
     </script>
