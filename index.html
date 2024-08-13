@@ -132,15 +132,17 @@
                 sele: `${row.i} or ${row.j}`,
                 color: "red"
             });
-            component.addRepresentation("cartoon", {
-                sele: row.crossing_res.map(id => `${id}`).join(' or '),
-                color: "blue"
-            });
 
             component.addRepresentation("cartoon", {
                 sele: row.surrounding_res.map(id => `${id}`).join(' or '),
                 color: "green"
             });
+
+            component.addRepresentation("cartoon", {
+                sele: row.crossing_res.map(id => `${id}`).join(' or '),
+                color: "blue"
+            });
+
 
             // Display information
             document.getElementById("info").innerHTML = `
