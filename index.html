@@ -132,9 +132,14 @@
                 sele: `${row.i} or ${row.j}`,
                 color: "red"
             });
-            component.addRepresentation("spacefill", {
+            component.addRepresentation("cartoon", {
                 sele: row.crossing_res.map(id => `${id}`).join(' or '),
                 color: "blue"
+            });
+
+            component.addRepresentation("cartoon", {
+                sele: row.surrounding_res.map(id => `${id}`).join(' or '),
+                color: "green"
             });
 
             // Display information
@@ -143,7 +148,8 @@
                 <strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
                 <strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
                 <strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
-                <strong>crossing(s):</strong> ${row.crossing_res.join(', ')}
+       	        <strong>crossing(s):</strong> ${row.crossing_res.join(', ')}<br>
+                <strong>crossing(s):</strong> ${row.surrounding_res.join(', ')}
             `;
         }
 
