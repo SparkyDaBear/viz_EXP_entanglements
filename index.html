@@ -152,9 +152,8 @@
 	        }
 	    }
 
-
             component.addRepresentation("spacefill", {
-                sele: row.crossing_res.map(id => `${id}`).join(' or '),
+		sele: row.crossing_res.map(id => `:${id} @ca`).join(' or '),
                 color: "blue"
             });
 
