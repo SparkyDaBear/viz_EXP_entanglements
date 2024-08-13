@@ -39,7 +39,7 @@
                 const values = row.split("|");
                 return headers.reduce((obj, header, index) => {
                     try {
-                        if (header === "crossing_res" || header === "surrounding_res") {
+                        if (header === "crossing_res" || header === "surrounding_res" || header === "crossing_res_w_buff") {
                             // Split the string by ';' and convert to an array of numbers
                             const valueString = values[index].trim();
                             obj[header] = valueString ? valueString.split(";").map(Number) : [];
@@ -138,11 +138,15 @@
                 color: "green"
             });
 
-            component.addRepresentation("cartoon", {
+            component.addRepresentation("spacefill", {
                 sele: row.crossing_res.map(id => `${id}`).join(' or '),
                 color: "blue"
             });
 
+            component.addRepresentation("cartoon", {
+                sele: row.crossing_res_w_buff.map(id => `${id}`).join(' or '),
+                color: "blue"
+            });
 
             // Display information
             document.getElementById("info").innerHTML = `
@@ -150,8 +154,9 @@
                 <strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
                 <strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
                 <strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
-       	        <strong>crossing(s):</strong> ${row.crossing_res.join(', ')}<br>
-                <strong>crossing(s):</strong> ${row.surrounding_res.join(', ')}
+       	        <strong>Crossing(s):</strong> ${row.crossing_res.join(', ')}<br>
+       	        <strong>Crossing Residues with buff:</strong> ${row.crossing_res_w_buff.join(', ')}<br>
+                <strong>Surrounding Residues(s):</strong> ${row.surrounding_res.join(', ')}
             `;
         }
 
