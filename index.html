@@ -153,10 +153,10 @@
 	    }
 
             component.addRepresentation("spacefill", {
-		sele: row.crossing_res.map(id => `:${id} and .CA`).join(' or '),
+		sele: row.crossing_res.map(id => `${id} and .CA`).join(' or '),
                 color: "blue"
             });
-	    console.log("Crossing residues selection command:", row.crossing_res.map(id => `:${id} and .CA`).join(' or '))
+	    console.log("Crossing residues selection command:", row.crossing_res.map(id => `${id} and .CA`).join(' or '))
 
             component.addRepresentation("cartoon", {
                 sele: row.crossing_res_w_buff.map(id => `${id}`).join(' or '),
