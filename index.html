@@ -43,7 +43,7 @@
                 const values = row.split("|");
                 return headers.reduce((obj, header, index) => {
                     try {
-                        if (header === "crossing_res" || header === "surrounding_res" || header === "crossing_res_w_buff" || header === "C_cut" || header === "CD_cut" || header === "CG_cut") {
+                        if (header === "crossing_res" || header === "surrounding_res" || header === "crossing_res_w_buff" || header === "C_cut" || header === "CD_cut" || header === "CG_cut"  || header === "C_Ecut" || header === "CD_Ecut" || header === "CG_Ecut") {
                             // Split the string by ';' and convert to an array of numbers
                             const valueString = values[index].trim();
                             obj[header] = valueString ? valueString.split(";").map(Number) : [];
@@ -124,7 +124,7 @@
             component.removeAllRepresentations();
 	    component.addRepresentation("cartoon", {color: "cyan"});
 
-	    // highlight loop
+	        // highlight loop
             component.addRepresentation("cartoon", {
                 sele: `${row.i}-${row.j}`,
                 color: "red"
@@ -163,6 +163,33 @@
                 } else {
                     console.log("CG_cut array is empty, skipping spacefill representation.");
                 }
+
+                if (row.C_Ecut.length > 0) {
+                        Cut = component.addRepresentation("spacefill", {
+                        sele: row.C_Ecut.map(id => `${id}`).join(' or '),
+                        color: "orange"
+                    });
+                } else {
+                    console.log("C_Ecut array is empty, skipping spacefill representation.");
+                }
+
+                if (row.CD_Ecut.length > 0) {
+                        Cut = component.addRepresentation("spacefill", {
+                        sele: row.CD_Ecut.map(id => `${id}`).join(' or '),
+                        color: "orange"
+                    });
+                } else {
+                    console.log("CD_Ecut array is empty, skipping spacefill representation.");
+                }
+
+                if (row.CG_Ecut.length > 0) {
+                        Cut = component.addRepresentation("spacefill", {
+                        sele: row.CG_Ecut.map(id => `${id}`).join(' or '),
+                        color: "orange"
+                    });
+                } else {
+                    console.log("CG_Ecut array is empty, skipping spacefill representation.");
+                }
             } else {
                 if (Cut) {Cut.setVisibility(false)}
 
@@ -180,15 +207,15 @@
 	        }
 	    }
 
-            component.addRepresentation("spacefill", {
+        component.addRepresentation("spacefill", {
 		sele: row.crossing_res.map(id => `${id} and .CA`).join(' or '),
                 color: "blue"
             });
 	    console.log("Crossing residues selection command:", row.crossing_res.map(id => `${id} and .CA`).join(' or '))
 
-            component.addRepresentation("cartoon", {
-                sele: row.crossing_res_w_buff.map(id => `${id}`).join(' or '),
-                color: "blue"
+        component.addRepresentation("cartoon", {
+            sele: row.crossing_res_w_buff.map(id => `${id}`).join(' or '),
+            color: "blue"
             });
 
             // Display information
