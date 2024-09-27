@@ -41,7 +41,7 @@
                 const values = row.split("|");
                 return headers.reduce((obj, header, index) => {
                     try {
-                        if (header === "crossing_res" || header === "surrounding_res" || header === "crossing_res_w_buff") {
+                        if (header === "crossing_res" || header === "surrounding_res" || header === "crossing_res_w_buff" || header === "C_cut" || header === "CD_cut" || header === "CG_cut") {
                             // Split the string by ';' and convert to an array of numbers
                             const valueString = values[index].trim();
                             obj[header] = valueString ? valueString.split(";").map(Number) : [];
@@ -131,6 +131,11 @@
             component.addRepresentation("spacefill", {
                 sele: `${row.i} or ${row.j}`,
                 color: "red"
+            });
+
+            component.addRepresentation("spacefill", {
+                sele: `${row.C_cut} or ${row.CD_cut} or ${row.CG_cut}`,
+                color: "yellow"
             });
 
             //component.addRepresentation("cartoon", {
