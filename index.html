@@ -134,15 +134,17 @@
             });
 
             component.addRepresentation("spacefill", {
+		        sele: row.C_cut.map(id => `${id}`).join(' or '),
                 sele: `${row.C_cut}`,
                 color: "yellow"
             });
+
             component.addRepresentation("spacefill", {
-                sele: `${row.CD_cut}`,
+		        sele: row.CD_cut.map(id => `${id}`).join(' or '),
                 color: "yellow"
             });
             component.addRepresentation("spacefill", {
-                sele: `${row.CG_cut}`,
+		        sele: row.CG_cut.map(id => `${id}`).join(' or '),
                 color: "yellow"
             });
 
