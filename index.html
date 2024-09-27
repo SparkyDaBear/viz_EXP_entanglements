@@ -221,6 +221,9 @@
             // Display information
             document.getElementById("info").innerHTML = `
                 <strong>UniprotID:</strong> ${row.UniprotID}<br>
+                <strong>Num ENT res:</strong> ${row.entR_size}<br>
+                <strong>Num Non-ENT res:</strong> ${row.nonentR_size}<br>
+                <strong>Cov ENT res:</strong> ${row.entR_cov}<br>
                 <strong>ENT-ID:</strong> ${row["ENT-ID"]}<br>
                 <strong>i:</strong> ${row.i} (${row["i-resname"]})<br>
                 <strong>j:</strong> ${row.j} (${row["j-resname"]})<br>
