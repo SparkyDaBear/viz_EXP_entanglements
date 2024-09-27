@@ -21,6 +21,8 @@
     <div id="info"></div>
     <label for="toggleSurroundingRes">Show Surrounding Residues:</label>
     <input type="checkbox" id="toggleSurroundingRes" checked>
+    <label for="toggleCutRes">Show Sig. PK-Cutsite Residues:</label>
+    <input type="checkbox" id="toggleCutRes" checked>
 
     <script>
         // Initialize NGL Stage
@@ -133,33 +135,38 @@
                 color: "red"
             });
 
-            if (row.C_cut.length > 0) {
-                component.addRepresentation("spacefill", {
-                    sele: row.C_cut.map(id => `${id}`).join(' or '),
-                    color: "yellow"
-                });
-            } else {
-                console.log("C_cut array is empty, skipping spacefill representation.");
-            }
+            // Handel cut site residues based on checkbox state
+            if (document.getElementById("toggleCutRes").checked){
+                if (row.C_cut.length > 0) {
+                        Cut = component.addRepresentation("spacefill", {
+                        sele: row.C_cut.map(id => `${id}`).join(' or '),
+                        color: "yellow"
+                    });
+                } else {
+                    console.log("C_cut array is empty, skipping spacefill representation.");
+                }
 
-            if (row.CD_cut.length > 0) {
-                component.addRepresentation("spacefill", {
-                    sele: row.CD_cut.map(id => `${id}`).join(' or '),
-                    color: "yellow"
-                });
-            } else {
-                console.log("CD_cut array is empty, skipping spacefill representation.");
-            }
+                if (row.CD_cut.length > 0) {
+                        Cut = component.addRepresentation("spacefill", {
+                        sele: row.CD_cut.map(id => `${id}`).join(' or '),
+                        color: "yellow"
+                    });
+                } else {
+                    console.log("CD_cut array is empty, skipping spacefill representation.");
+                }
 
-            if (row.CG_cut.length > 0) {
-                component.addRepresentation("spacefill", {
-                    sele: row.CG_cut.map(id => `${id}`).join(' or '),
-                    color: "yellow"
-                });
+                if (row.CG_cut.length > 0) {
+                        Cut = component.addRepresentation("spacefill", {
+                        sele: row.CG_cut.map(id => `${id}`).join(' or '),
+                        color: "yellow"
+                    });
+                } else {
+                    console.log("CG_cut array is empty, skipping spacefill representation.");
+                }
             } else {
-                console.log("CG_cut array is empty, skipping spacefill representation.");
-            }
+                if (Cut) {Cut.setVisibility(false)}
 
+                    }
 
 	    // Handle surrounding residues based on checkbox state
 	    if (document.getElementById("toggleSurroundingRes").checked) {
@@ -215,6 +222,12 @@
             }
         });
 
+        document.getElementById("toggleCutRes").addEventListener('change', function() {
+            const currentRow = csvData.find(row => row.UniprotID === document.getElementById("pdbSelect").value.split('.')[0]);
+            if (currentRow) {
+                highlightResidues(currentRow);
+            }
+        });
     </script>
 </body>
 </html>
