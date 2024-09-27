@@ -134,7 +134,15 @@
             });
 
             component.addRepresentation("spacefill", {
-                sele: `${row.C_cut} or ${row.CD_cut} or ${row.CG_cut}`,
+                sele: `${row.C_cut}`,
+                color: "yellow"
+            });
+            component.addRepresentation("spacefill", {
+                sele: `${row.CD_cut}`,
+                color: "yellow"
+            });
+            component.addRepresentation("spacefill", {
+                sele: `${row.CG_cut}`,
                 color: "yellow"
             });
 
