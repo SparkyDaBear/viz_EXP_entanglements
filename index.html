@@ -133,20 +133,35 @@
                 color: "red"
             });
 
-            component.addRepresentation("spacefill", {
-		        sele: row.C_cut.map(id => `${id}`).join(' or '),
-                sele: `${row.C_cut}`,
-                color: "yellow"
-            });
+            if (row.C_cut.length > 0) {
+                component.addRepresentation("spacefill", {
+                    sele: row.C_cut.map(id => `${id}`).join(' or '),
+                    sele: `${row.C_cut}`,
+                    color: "yellow"
+                });
+            } else {
+                console.log("C_cut array is empty, skipping spacefill representation.");
+            }
 
-            component.addRepresentation("spacefill", {
-		        sele: row.CD_cut.map(id => `${id}`).join(' or '),
-                color: "yellow"
-            });
-            component.addRepresentation("spacefill", {
-		        sele: row.CG_cut.map(id => `${id}`).join(' or '),
-                color: "yellow"
-            });
+            if (row.CD_cut.length > 0) {
+                component.addRepresentation("spacefill", {
+                    sele: row.CD_cut.map(id => `${id}`).join(' or '),
+                    sele: `${row.CD_cut}`,
+                    color: "yellow"
+                });
+            } else {
+                console.log("CD_cut array is empty, skipping spacefill representation.");
+            }
+
+            if (row.CG_cut.length > 0) {
+                component.addRepresentation("spacefill", {
+                    sele: row.CG_cut.map(id => `${id}`).join(' or '),
+                    sele: `${row.CG_cut}`,
+                    color: "yellow"
+                });
+            } else {
+                console.log("CG_cut array is empty, skipping spacefill representation.");
+            }
 
 
 	    // Handle surrounding residues based on checkbox state
